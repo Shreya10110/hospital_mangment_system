@@ -1,0 +1,15 @@
+.signup-mode{align-items:start}
+.signup-mode .hero{position:sticky;top:0;height:100vh}
+.signup-mode .auth-card{max-width:620px;margin:30px auto}
+.role-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.role-picker button{display:flex;flex-direction:column;align-items:flex-start;gap:9px;text-align:left;border:1px solid #d6e4df;border-radius:11px;background:#fff;color:#365a51;padding:13px;cursor:pointer}
+.role-picker button svg{color:#168d79}
+.role-picker button span{display:grid;gap:2px}
+.role-picker button small{font-size:10px;font-weight:400;color:#72877f;line-height:1.35}
+.role-picker button.active{border-color:#087b68;background:#eaf7f2;box-shadow:0 0 0 2px #bce6d8}
+.registration-section{display:grid;gap:16px;border-top:1px solid #deebe6;padding-top:22px}
+.registration-section h3{margin:0;font:700 20px 'Playfair Display',serif}
+.form-note{font-size:12px;line-height:1.55;color:#56736a;background:#edf7f3;border-radius:9px;padding:11px;margin:0}
+label small{font-weight:400;color:#74877f}
+select{border:1px solid #d6e4df;border-radius:10px;padding:12px 13px;background:#fff;color:#17352d;outline-color:#15977e}.warning-note{background:#fff6df;color:#805d18}
+@media(max-width:780px){.role-picker{grid-template-columns:1fr}.role-picker button{flex-direction:row}.signup-mode .hero{display:none}.signup-mode .auth-card{margin:auto}}
