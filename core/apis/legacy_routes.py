@@ -1,12 +1,12 @@
 from datetime import datetime, timezone, date
 from fastapi import APIRouter, Depends, HTTPException, Response, status
-from pymongo.errors import DuplicateKeyError
+from core.database.database import DuplicateKeyError, get_database
 from commons.auth import hash_password, verify_password, create_token, current_user, require
-from core.database.database import get_database
 from core.cruds.base import oid, serialize
 from core.models.domain import *
-from core.services import available_slots, validate_booking_date, SLOTS, patient_context
+from core.services import available_slots, validate_booking_date, SLOTS, patient_context, prescription_intent
 from services.pdf_service import prescription_pdf
+from services.general_health_service import general_health_answer
 
 router = APIRouter()
 def utc(): return datetime.now(timezone.utc)
@@ -125,6 +125,8 @@ async def hospital_doctors(hospital_id:str):
 @router.post("/doctor/hospitals/{hospital_id}/apply",status_code=201)
 async def apply_to_hospital(hospital_id:str,user=Depends(require("doctor"))):
     doctor=await one("doctors",user["id"])
+    if doctor.get("verification_status") != "verified":
+        raise HTTPException(403,"Your doctor account must be verified by an admin before requesting a hospital affiliation")
     target=await one("hospitals",hospital_id)
     if target["verification_status"]!="verified": raise HTTPException(400,"Hospital is not accepting applications")
     try: await get_database().applications.insert_one({"doctor_id":user["id"],"hospital_id":hospital_id,"status":"pending","created_at":utc()})
@@ -254,7 +256,12 @@ async def prescription_detail(prescription_id:str,user=Depends(current_user)):
     if user["role"] not in {"patient","doctor"}: raise HTTPException(403,"You do not have permission for this prescription")
     return await enrich_prescription(doc)
 @router.post("/chatbot/ask")
-async def ask(payload:AskCreate,user=Depends(require("patient"))): return {"answer":await patient_context(user["id"],payload.question,payload.prescription_id),"disclaimer":"This assistant shares prescription information only. Consult your doctor for medical decisions."}
+async def ask(payload:AskCreate,user=Depends(require("patient"))):
+    if payload.prescription_id or prescription_intent(payload.question):
+        answer=await patient_context(user["id"],payload.question,payload.prescription_id); source="prescription"
+    else:
+        answer=await general_health_answer(payload.question); source="general_health"
+    return {"answer":answer,"source":source,"disclaimer":"Prescription answers repeat stored records; general answers are educational only. Consult your doctor for medical decisions."}
 
 # --- T12–T28: administration, workspaces, and complete care lifecycle -------
 async def owned_hospital(user: dict, verified: bool = False):

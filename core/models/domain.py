@@ -23,6 +23,7 @@ class DoctorCreate(UserCreate):
 class ApplicationCreate(BaseModel): hospital_id: str
 class AppointmentCreate(BaseModel):
     hospital_id: str; doctor_id: str; date: str; slot: str
+    patient_age: int = Field(ge=0, le=120)
     reason: str = Field(min_length=10, max_length=1000); temperature: float | None = Field(default=None, ge=95, le=110)
     symptoms: list[str] = []
 class PrescriptionCreate(BaseModel):
