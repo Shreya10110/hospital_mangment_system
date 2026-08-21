@@ -7,8 +7,8 @@ import jwt
 import bcrypt
 
 _scheme = HTTPBearer(auto_error=False)
-SECRET = os.getenv("secret") or os.getenv("JWT_SECRET") or "change-this-development-secret"
-ALGORITHM = os.getenv("algorithm", "HS256")
+SECRET = os.getenv("JWT_SECRET") or os.getenv("JWT_SECRET_KEY") or os.getenv("secret") or "change-this-development-secret"
+ALGORITHM = os.getenv("JWT_ALGORITHM") or os.getenv("algorithm", "HS256")
 
 def hash_password(password: str) -> str:
     encoded=password.encode("utf-8")

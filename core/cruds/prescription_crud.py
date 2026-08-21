@@ -1,4 +1,4 @@
-"""MongoDB operations for prescription documents."""
+"""PostgreSQL operations for prescription records."""
 from core.database.database import get_database
 from core.cruds.base import oid
 

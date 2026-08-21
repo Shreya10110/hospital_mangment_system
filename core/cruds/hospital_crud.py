@@ -1,4 +1,4 @@
-"""MongoDB operations for hospital documents."""
+"""PostgreSQL operations for hospital records."""
 from core.database.database import get_database
 from core.cruds.base import oid
 

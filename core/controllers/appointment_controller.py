@@ -1,4 +1,4 @@
-"""Appointment scheduling helpers; the unique Mongo index is the final booking guard."""
+"""Appointment scheduling helpers backed by PostgreSQL uniqueness constraints."""
 from core.database.database import get_database
 from core.cruds.base import serialize
 from core.cruds.appointment_crud import AppointmentCRUD

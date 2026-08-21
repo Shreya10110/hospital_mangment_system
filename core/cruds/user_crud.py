@@ -1,4 +1,4 @@
-"""MongoDB operations for user accounts only; no HTTP policy belongs here."""
+"""PostgreSQL operations for user accounts only; no HTTP policy belongs here."""
 from core.database.database import get_database
 from core.cruds.base import oid
 

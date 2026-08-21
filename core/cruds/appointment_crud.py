@@ -1,4 +1,4 @@
-"""MongoDB operations for appointment documents."""
+"""PostgreSQL operations for appointment records."""
 from core.database.database import get_database
 from core.cruds.base import oid
 

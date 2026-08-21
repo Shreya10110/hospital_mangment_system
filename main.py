@@ -1,4 +1,5 @@
 import logging
+import os
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
@@ -12,13 +13,17 @@ load_dotenv()
 from core.database.database import create_indexes
 from core.apis.routes import router
 
+local_origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+configured_origins = [origin.strip().rstrip("/") for origin in os.getenv("CORS_ORIGINS", "").split(",") if origin.strip()]
+allowed_origins = list(dict.fromkeys(local_origins + configured_origins))
+
 @asynccontextmanager
 async def lifespan(app):
     await create_indexes(); yield
 app=FastAPI(title="CityCare API",version="1.0.0",lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=allowed_origins,
     allow_origin_regex=r"(?i)^https?://(localhost|127\.0\.0\.1|0\.0\.0\.0|shreya)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
