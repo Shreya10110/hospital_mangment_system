@@ -13,7 +13,7 @@ async function fetchWithRetry(url, options) {
       if (attempt < attempts - 1) await new Promise(resolve => setTimeout(resolve, 350 * (attempt + 1)));
     }
   }
-  throw new Error("Cannot reach the CityCare backend. Please confirm the backend is running on port 8010 and refresh the page.", {cause:lastError});
+  throw new Error(`Cannot reach the CityCare backend (${API}). Please confirm the backend service is running and refresh the page.`, {cause:lastError});
 }
 
 export async function api(path, options = {}) {
