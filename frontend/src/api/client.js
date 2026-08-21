@@ -1,4 +1,5 @@
-const API = (import.meta.env.VITE_API_URL || "http://127.0.0.1:8010").replace(/\/+$/, "");
+let API = (import.meta.env.VITE_API_URL || "http://127.0.0.1:8010").replace(/\/+$/, "");
+if (API && !API.startsWith("http://") && !API.startsWith("https://")) { API = `https://${API}`; }
 
 async function fetchWithRetry(url, options) {
   const method = (options.method || "GET").toUpperCase();

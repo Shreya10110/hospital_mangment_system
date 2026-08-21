@@ -21,7 +21,7 @@ services:
         fromService:
           type: web
           name: citycare-frontend
-          property: url
+          property: host
       - key: ADMIN_EMAIL
         sync: false
       - key: ADMIN_PASSWORD
@@ -44,4 +44,4 @@ services:
         fromService:
           type: web
           name: citycare-backend
-          property: url
+          property: host
