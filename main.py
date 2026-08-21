@@ -33,6 +33,8 @@ app.add_middleware(
 async def armour(request:Request,exc:Exception):
     logging.exception("Unhandled request failure")
     return JSONResponse(status_code=500,content={"detail":"Something went wrong. Please try again."})
+@app.get("/")
+async def root(): return {"message":"CityCare API is running.","health":"/health","docs":"/docs"}
 @app.get("/health")
 async def health(): return {"status":"ok"}
 app.include_router(router)
