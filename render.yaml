@@ -19,7 +19,7 @@ services:
         value: gemini-2.5-flash
       - key: CORS_ORIGINS
         fromService:
-          type: static
+          type: web
           name: citycare-frontend
           property: url
       - key: ADMIN_EMAIL
@@ -30,8 +30,9 @@ services:
         value: 3.11.9
 
   # React / Vite Static Site Frontend
-  - type: static
+  - type: web
     name: citycare-frontend
+    runtime: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     routes:
